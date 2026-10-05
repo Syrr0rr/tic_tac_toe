@@ -14,10 +14,9 @@ def get_validint(prompt="Enter positive int") :
     while user_input.isdigit() == False:
         print("Invalid.")
         user_input = input(prompt)  
-    return int(user_input)
+    return int(user_input) 
  
- 
-def player_go(symbol): #maybe combine both player functions into 1?
+def player_go(symbol):
     '''Starts player turn'''
     X_row = get_validint(f"{symbol} row (1-3): ")
     X_column = get_validint(f"{symbol} column(1-3): ")
@@ -28,9 +27,9 @@ def player_go(symbol): #maybe combine both player functions into 1?
         X_row = get_validint(f"{symbol} row: ")
         X_column = get_validint(f"{symbol} column: ")
 
-    while Board[X_row] [X_column] != "-": #can make != "-"
+    while Board[X_row] [X_column] != "-": 
         print("Something is already there")
-        X_row = get_validint(f"{symbol} row: ")      #somehow adds 1 to row and column
+        X_row = get_validint(f"{symbol} row: ")     
         X_column = get_validint(f"{symbol} column: ")
         X_row = X_row - 1
         X_column = X_column - 1
@@ -65,11 +64,10 @@ def find_result(player = "X"):
             return "O"
     return f"player {player} didnt"
 
-
 def reset():
     '''resets the board'''
     global another_round
-    if result == "X" or result == "O" or num_dash == 0: #if the result isnt one of these then it is skipped
+    if result == "X" or result == "O" or num_dash == 0: 
         replay = input("replay? (y/n)")
         if replay == "y":
             for row in range(len(Board)):
@@ -78,7 +76,6 @@ def reset():
             another_round = True    
         else:
             another_round = False
-
 
 def count_dash():
     count = 0
@@ -89,7 +86,6 @@ def count_dash():
     return count
 active_player = "X"
 another_round = True
-
 
 while another_round:
     global num_dash
@@ -103,4 +99,4 @@ while another_round:
     result = find_result(active_player)
     print(f"{result} win")
     reset()
-    active_player = "O" if active_player == "X" else "X" #plays even if the player before put a thing over a space already taken
+    active_player = "O" if active_player == "X" else "X" #
