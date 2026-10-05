@@ -21,16 +21,19 @@ def player_go(symbol): #maybe combine both player functions into 1?
     '''Starts player turn'''
     X_row = get_validint(f"{symbol} row (1-3): ")
     X_column = get_validint(f"{symbol} column(1-3): ")
-    X_row = X_row- 1
+    X_row = X_row - 1
     X_column = X_column - 1
-    if X_row > 3 or X_column > 3:
+    if (X_row > 2 or X_column > 2) or (X_row < 0 or X_column < 0):
         print("You went over ")
         X_row = get_validint(f"{symbol} row: ")
         X_column = get_validint(f"{symbol} column: ")
-    if Board[X_row] [X_column] == "X" or Board[X_row] [X_column] == "O":
+
+    while Board[X_row] [X_column] != "-": #can make != "-"
         print("Something is already there")
-        X_row = get_validint(f"{symbol} row: ")
+        X_row = get_validint(f"{symbol} row: ")      #somehow adds 1 to row and column
         X_column = get_validint(f"{symbol} column: ")
+        X_row = X_row - 1
+        X_column = X_column - 1
     Board[X_row] [X_column] = symbol
  
 def check_diagonal():
@@ -65,21 +68,35 @@ def find_result(player = "X"):
 
 def reset():
     '''resets the board'''
-    for row in range(len(Board)):
-        for col in range(len(Board)):
-            Board[row][col] = "-"
- 
-#print_board()
-active_player = "X"
-while True:
-    print_board()
-    player_go(active_player)
-    result = find_result(active_player)
+    global another_round
     print(f"{result} win")
     if result == "X" or result == "O":
         replay = input("replay? (y/n)")
         if replay == "y":
-            reset()
+            for row in range(len(Board)):
+                for col in range(len(Board)):
+                        Board[row][col] = "-"
+            another_round = True    
         else:
-            break
-    active_player = "O" if active_player == "X" else "X"
+            another_round = False
+def count_dash():
+    count = 0
+    for row in range(len(Board)):
+        for col in range(len(Board)):
+            if Board[row][col] == "-":
+                count += 1
+    return count
+active_player = "X"
+another_round = True
+
+
+while another_round:
+    num_dash = count_dash()
+    print_board()
+    print(num_dash)
+    player_go(active_player)
+    if num_dash == 0:
+        reset()
+    result = find_result(active_player)
+    reset()
+    active_player = "O" if active_player == "X" else "X" #plays even if the player before put a thing over a space already taken
