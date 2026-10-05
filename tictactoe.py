@@ -69,8 +69,7 @@ def find_result(player = "X"):
 def reset():
     '''resets the board'''
     global another_round
-    print(f"{result} win")
-    if result == "X" or result == "O":
+    if result == "X" or result == "O" or num_dash == 0: #if the result isnt one of these then it is skipped
         replay = input("replay? (y/n)")
         if replay == "y":
             for row in range(len(Board)):
@@ -79,6 +78,8 @@ def reset():
             another_round = True    
         else:
             another_round = False
+
+
 def count_dash():
     count = 0
     for row in range(len(Board)):
@@ -91,12 +92,15 @@ another_round = True
 
 
 while another_round:
+    global num_dash
     num_dash = count_dash()
     print_board()
     print(num_dash)
-    player_go(active_player)
     if num_dash == 0:
+        print("Tie")
         reset()
+    player_go(active_player)
     result = find_result(active_player)
+    print(f"{result} win")
     reset()
     active_player = "O" if active_player == "X" else "X" #plays even if the player before put a thing over a space already taken
